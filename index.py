@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
+from PIL import Image
+import requests
 
 # Load the dataset 
 books = pd.read_csv("cleaned_dataa.csv")
@@ -59,10 +61,22 @@ def main():
             st.subheader("Recommended Books:")
             for i, book in enumerate(recommended_books):
                 st.write(f"{i+1}. {book}")
+                response = requests.get(f"https://www.googleapis.com/books/v1/volumes?q={book.replace(' ', '+')}")
+                if response.status_code == 200:
+                    data = response.json()
+                    if 'items' in data and len(data['items']) > 0:
+                        volume_info = data['items'][0]['volumeInfo']
+                        cover_url = volume_info['imageLinks']['smallThumbnail'] if 'imageLinks' in volume_info else None
+                        if cover_url:
+                            st.image(cover_url, caption='', width=100)  # Adjust width as needed
+                        else:
+                            st.write("Book cover not found")
                 image_url= books.loc[books['Book'] == book]['Description'].tolist()
-                # st.write(image_url)
-                st.write(image_url[0])
-                # st.write(book)
+                
+                
+                # st.write(image_url[0])
+                
+                
         else:
             st.write("Please enter a valid book title.")
 

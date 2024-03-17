@@ -65,7 +65,7 @@ def main():
             for i, book in enumerate(recommended_books):
                 st.write(f"{i+1}. {book}")
                 response = requests.get(f"https://www.googleapis.com/books/v1/volumes?q={book.replace(' ', '+')}")
-                if response.status_code == 200:
+                if response.status_code == 200 :
                     data = response.json()
                     if 'items' in data and len(data['items']) > 0:
                         volume_info = data['items'][0]['volumeInfo']

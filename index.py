@@ -74,7 +74,7 @@ def main():
                 image_url= books.loc[books['Book'] == book]['Description'].tolist()
                 
                 
-                # st.write(image_url[0])
+                st.write(image_url[0])
                 
                 
         else:

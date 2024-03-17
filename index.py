@@ -56,7 +56,10 @@ def main():
     book_title = st.sidebar.text_input("Enter a Book Title")
     
     if st.sidebar.button("Recommend"):
-        if book_title:
+        if book_title not in books['Book'].values:
+            st.write('Book title not found in the dataset')
+            return
+        else :
             recommended_books = get_recommendations(book_title)
             st.subheader("Recommended Books:")
             for i, book in enumerate(recommended_books):
@@ -77,8 +80,8 @@ def main():
                 st.write(image_url[0])
                 
                 
-        else:
-            st.write("Please enter a valid book title.")
+            else:
+                st.write("Please enter a valid book title.")
 
 if __name__ == '__main__':
     main()
